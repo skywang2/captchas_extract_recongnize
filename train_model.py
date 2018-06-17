@@ -13,7 +13,7 @@ from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras.layers.core import Flatten, Dense
 from helpers import resize_to_fit
 
-LETTER_IMAGES_FOLDER = "extracted_letter_images"
+LETTER_IMAGES_FOLDER = "extracted_images"
 MODEL_FILENAME = "captcha_model.hdf5"
 MODEL_LABELS_FILENAME = "model_labels.dat"
 
@@ -38,7 +38,7 @@ for image_file in paths.list_files(LETTER_IMAGES_FOLDER):
 # 将图片数据转换到区间[0,1]，数据结构使用ndarray
 data = np.array(data, dtype="float") / 255.0
 labels = np.array(labels)
-# 划分训练集，验证集，训练/验证比例test_size设定为0.25
+# 随机划分训练集，验证集，训练/验证比例test_size设定为0.75/0.25
 (X_train, X_test, Y_train, Y_test) = train_test_split(data, labels, test_size=0.25, random_state=0)
 # 标签二值化预处理
 lb = LabelBinarizer().fit(Y_train)
@@ -48,6 +48,7 @@ Y_test = lb.transform(Y_test)
 with open(MODEL_LABELS_FILENAME, "wb") as f:
     pickle.dump(lb, f)
 
+# 不太清楚.add方法的实现，只能直接调用方法
 # 构造神经网络，按照典型的卷积神经网络进行两次卷积、池化，并一维序列化，全连接，输出
 model = Sequential()
 # 第一次卷积、池化，第一层要使用input_shape参数，此处表示20*20的灰度图

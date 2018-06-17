@@ -12,6 +12,7 @@ train_images = glob.glob(os.path.join(CAPTCHA_IMAGE_FOLDER, '*'))
 counts = {}
 
 # 遍历图片
+# enumerate可以同时返回列表下标和值
 for (i, train_image) in enumerate(train_images):
     print('processing image {}/{}'.format(i+1, len(train_images)))
     # 获取图片文件名，取得图片文字内容
@@ -20,9 +21,9 @@ for (i, train_image) in enumerate(train_images):
     img = cv2.imread(train_image)
     # 转换为灰度图
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # 给源图像增加边界
+    # 给源图像增加边界，复制边缘
     gray = cv2.copyMakeBorder(gray, 8, 8, 8, 8, cv2.BORDER_REPLICATE)
-    # 设定二值化的阈值
+    # 设定二值化的阈值,0~255级灰度
     threshold = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
     # 标记每个字母轮廓
     contours = cv2.findContours(threshold.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)

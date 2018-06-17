@@ -5,10 +5,10 @@ def resize_to_fit(image, width, height):
     (h, w) = image.shape[:2]
     if w > h:
         # 修改宽度
-        image = imtuils.resize(image, width=width)
+        image = imutils.resize(image, width=width)
     else:
         # 修改长度
-        image = imtuils.resize(image, height=height)
+        image = imutils.resize(image, height=height)
     # 计算需要填充的边缘的大小
     padH = int((height - image.shape[0]) / 2.0)
     padW = int((width - image.shape[1]) / 2.0)
